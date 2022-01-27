@@ -2,40 +2,11 @@ import React, { useState, useRef } from "react";
 import "../styles/App.css";
 import { gql } from "apollo-boost";
 import { useQuery, useMutation } from "@apollo/react-hooks";
-import { useAuth0 } from "../auth/react-auth0-wrapper";
+import { useAuth } from "../auth/react-auth0-wrapper";
+import { Button, Label, Icon } from 'semantic-ui-react';
 
-const FETCH_LIKES = gql`
-  query($id: Int!, $userId: String!) {
-    Post(where: { id: { _eq: $id } }) {
-      Likes_aggregate {
-        aggregate {
-          count
-        }
-      }
-      Likes(where: { user_id: { _eq: $userId } }) {
-        id
-      }
-    }
-  }
-`;
 
-const LIKE_POST = gql`
-  mutation($postId: Int!, $userId: String!) {
-    insert_Like(objects: [{ post_id: $postId, user_id: $userId }]) {
-      affected_rows
-    }
-  }
-`;
 
-const DELETE_LIKE = gql`
-  mutation($postId: Int!, $userId: String!) {
-    delete_Like(
-      where: { user_id: { _eq: $userId }, post_id: { _eq: $postId } }
-    ) {
-      affected_rows
-    }
-  }
-`;
 
 function Like(props) {
   const { isAuthenticated, user } = useAuth0();
