@@ -6,41 +6,6 @@ import { useAuth0 } from "../auth/react-auth0-wrapper";
 import { Button } from "react-bootstrap";
 import { NUMBER_OF_FOLLOWERS, NUMBER_OF_FOLLOWING } from "../pages/Profile.js";
 
-const FETCH_FOLLWERS = gql`
-  query($followingId: String!, $userId: String!) {
-    Follow(
-      where: {
-        follower_id: { _eq: $userId }
-        following_id: { _eq: $followingId }
-      }
-    ) {
-      id
-    }
-  }
-`;
-
-const FOLLOW_USER = gql`
-  mutation($followingId: String!, $userId: String!) {
-    insert_Follow(
-      objects: [{ follower_id: $userId, following_id: $followingId }]
-    ) {
-      affected_rows
-    }
-  }
-`;
-
-const UNFOLLOW_USER = gql`
-  mutation($followingId: String!, $userId: String!) {
-    delete_Follow(
-      where: {
-        follower_id: { _eq: $userId }
-        following_id: { _eq: $followingId }
-      }
-    ) {
-      affected_rows
-    }
-  }
-`;
 
 function Follow(props) {
   const { isAuthenticated, user } = useAuth0();

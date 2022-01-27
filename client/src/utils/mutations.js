@@ -54,3 +54,26 @@ export const ADD_COMMENT = gql`
     }
   }
 `;
+
+const FOLLOW_USER = gql`
+  mutation($followingId: String!, $userId: String!) {
+    insert_Follow(
+      objects: [{ follower_id: $userId, following_id: $followingId }]
+    ) {
+      affected_rows
+    }
+  }
+`;
+
+const UNFOLLOW_USER = gql`
+  mutation($followingId: String!, $userId: String!) {
+    delete_Follow(
+      where: {
+        follower_id: { _eq: $userId }
+        following_id: { _eq: $followingId }
+      }
+    ) {
+      affected_rows
+    }
+  }
+`;

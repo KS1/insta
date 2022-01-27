@@ -59,7 +59,20 @@ export const QUERY_ME = gql`
   }
 `;
 
-export const QUERY_DELETE_LIKE = gql`
+export const FETCH_FOLLWERS = gql`
+  query($followingId: String!, $userId: String!) {
+    Follow(
+      where: {
+        follower_id: { _eq: $userId }
+        following_id: { _eq: $followingId }
+      }
+    ) {
+      id
+    }
+  }
+`;
+
+export const QUERY_LIKE = gql`
   mutation($postId: Int!, $userId: String!) {
     insert_Like(objects: [{ 
       post_id: $postId, 

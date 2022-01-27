@@ -23,6 +23,17 @@ const typeDefs = gql`
     commentAuthor: String
     createdAt: String
   }
+   
+   type Like {
+     _id: ID
+     username: String
+     thoughtText: String
+   }
+
+    type Follow {
+      _id: ID
+      followername: String
+    }
 
   type Auth {
     token: ID!
