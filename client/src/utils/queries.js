@@ -59,7 +59,23 @@ export const QUERY_ME = gql`
   }
 `;
 
-export const FETCH_FOLLWERS = gql`
+export const QUERY_LIKES = gql`
+  query($id: Int!, $userId: String!) {
+    Post(where: { id: { _eq: $id } }) {
+      Likes_aggregate {
+        aggregate {
+          count
+        }
+      }
+      Likes(where: { user_id: { _eq: $userId } }) {
+        id
+      }
+    }
+  }
+`;
+
+
+export const QUERY_FOLLOWERS = gql`
   query($followingId: String!, $userId: String!) {
     Follow(
       where: {
@@ -72,24 +88,4 @@ export const FETCH_FOLLWERS = gql`
   }
 `;
 
-export const QUERY_LIKE = gql`
-  mutation($postId: Int!, $userId: String!) {
-    insert_Like(objects: [{ 
-      post_id: $postId, 
-      user_id: $userId }]) {
-      affected_rows
-    }
-  }
-`;
 
-export const QUERY_DELETE_LIKE = gql`
-  mutation($postId: Int!, $userId: String!) {
-    delete_Like(
-      where: { 
-        user_id: { _eq: $userId },
-         post_id: { _eq: $postId } }
-    ) {
-      affected_rows
-    }
-  }
-`;

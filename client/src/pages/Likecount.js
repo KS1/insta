@@ -1,6 +1,6 @@
 import { useQuery, useMutation } from '@apollo/client';
 import { useParams, Link } from 'react-router-dom';
-import { CREATE_LIKE } from '../utils/mutations';
+import { QUERY_LIKE } from '../utils/mutations';
 import { QUERY_PHOTOPOST } from '../utils/queries';
 
 const Like = () => {
@@ -12,11 +12,11 @@ const Like = () => {
 
   const photopost = data?.photoposts || [];
 
-  const [createLike, { error }] = useMutation(CREATE_LIKE);
+  const [queryLike, { error }] = useMutation(QUERY_LIKE);
 
   const handleLike = async (userNum) => {
     try {
-      await createLike({
+      await queryLike({
         variables: { _id: id, userNum: userNum },
       });
     } catch (err) {
@@ -34,11 +34,8 @@ const Like = () => {
       ) : (
         <div className="card-body text-center mt-3">
           <h2>
-            {photopost[0].user1}
+            {photopost[0].user}
           </h2>
-          <h3>
-            {photopost[0].user1_likes}
-          </h3>
           <button className="btn btn-info" onClick={() => handleLike(1)}>
             Like for {photopost[0].user1}
           </button>{' '}

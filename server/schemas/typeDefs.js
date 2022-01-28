@@ -27,7 +27,6 @@ const typeDefs = gql`
    type Like {
      _id: ID
      username: String
-     thoughtText: String
    }
 
     type Follow {
@@ -46,6 +45,8 @@ const typeDefs = gql`
     thoughts(username: String): [Thought]
     thought(thoughtId: ID!): Thought
     me: User
+    like: (post: ID!): Like
+    comment: (post: ID!): Comment
   }
 
   type Mutation {
@@ -55,6 +56,7 @@ const typeDefs = gql`
     addComment(thoughtId: ID!, commentText: String!): Thought
     removeThought(thoughtId: ID!): Thought
     removeComment(thoughtId: ID!, commentId: ID!): Thought
+    like: (post: ID!): Like
   }
 `;
 

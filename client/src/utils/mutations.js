@@ -77,3 +77,25 @@ const UNFOLLOW_USER = gql`
     }
   }
 `;
+
+export const QUERY_LIKE = gql`
+  mutation($postId: Int!, $userId: String!) {
+    insert_Like(objects: [{ 
+      post_id: $postId, 
+      user_id: $userId }]) {
+      affected_rows
+    }
+  }
+`;
+
+export const QUERY_DELETE_LIKE = gql`
+  mutation($postId: Int!, $userId: String!) {
+    delete_Like(
+      where: { 
+        user_id: { _eq: $userId },
+         post_id: { _eq: $postId } }
+    ) {
+      affected_rows
+    }
+  }
+`;

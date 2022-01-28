@@ -1,15 +1,18 @@
 import React, { useState, useRef } from "react";
-import "../styles/App.css";
-import { gql } from "apollo-boost";
-import { useQuery, useMutation } from "@apollo/react-hooks";
-import { useAuth } from "../auth/react-auth0-wrapper";
+// import "./index.css";
+// import { gql } from "apollo-boost";
+import { useQuery, useMutation } from "@apollo/client";
+// import { useAuth } from "../utils/auth";
 import { Button, Label, Icon } from 'semantic-ui-react';
+import { QUERY_LIKE, QUERY_DELETE_LIKE } from "../utils/mutations";
+import { QUERY_LIKES } from "../utils/queries"
+
 
 
 
 
 function Like(props) {
-  const { isAuthenticated, user } = useAuth0();
+  // const { isAuthenticated, user } = useAuth();
 
   // stores if the currently logged in user has liked the post
   const [liked, setLiked] = useState(false);
@@ -19,36 +22,36 @@ function Like(props) {
   // will store value of userId for the lifetime of component
   const userId = useRef(null);
 
-  if (isAuthenticated) {
-    userId.current = user.sub;
-  } else {
+  // if (isAuthenticated) {
+  //   userId.current = user.sub;
+  // } else {
     userId.current = "none";
-  }
+  // }
 
   // like post mutation
-  const [likePost] = useMutation(LIKE_POST, {
+  const [likePost] = useMutation(QUERY_LIKE, {
     variables: { postId: props.postId, userId: userId.current },
     refetchQueries: [
       {
-        query: FETCH_LIKES,
+        query: QUERY_LIKES,
         variables: { id: props.postId, userId: userId.current }
       }
     ]
   });
 
   // delete post mutation
-  const [deleteLike] = useMutation(DELETE_LIKE, {
+  const [deleteLike] = useMutation(QUERY_DELETE_LIKE, {
     variables: { postId: props.postId, userId: userId.current },
     refetchQueries: [
       {
-        query: FETCH_LIKES,
+        query: QUERY_LIKES,
         variables: { id: props.postId, userId: userId.current }
       }
     ]
   });
 
   // fetch number of likes and array with like_id if user has already liked the post or an empty array
-  const { loading, error, data } = useQuery(FETCH_LIKES, {
+  const { loading, error, data } = useQuery(QUERY_LIKES, {
     variables: { id: props.postId, userId: userId.current }
   });
 
@@ -70,10 +73,10 @@ function Like(props) {
 
   return (
     <div className="post-like-container">
-      {isAuthenticated && (
+      {/* isAuthenticated && */ (
         <>
           {!liked && (
-            <button
+            <Button
               className="post-like-button-white button-nodec"
               onClick={() => {
                 likePost();
@@ -83,7 +86,7 @@ function Like(props) {
             />
           )}
           {liked && (
-            <button
+            <Button
               className="post-like-button-black button-nodec"
               onClick={() => {
                 deleteLike();

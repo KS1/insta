@@ -1,11 +1,25 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+// import { Auth } from '../utils/auth'
+import Like from '../Like';
+import CommentForm from '../CommentForm';
 import millie from '../../images/millie.JPG'
 import im2 from '../../images/im1.png'
-import { Grid, Card, Icon, Image } from 'semantic-ui-react'
+import { Grid, Card, Icon, Button, Label, Image } from 'semantic-ui-react'
 
-function Tile({ thought, showUsername }) {
+function Tile({ 
+thought, username,}) {
+    // //  const { user } = useutils(Auth)
+    //  function likePost() {
+    //      console.log('Like post!!');
+    //  }
+
+    //  function CommentForm() {
+    //      console.log('Comment on post!!');
+    //  }
+
     return (
+
         <Grid columns='equal'>
             <Grid.Row columns={3}>
                 <Grid.Column>
@@ -45,12 +59,12 @@ function Tile({ thought, showUsername }) {
                         <Card.Content extra>
                             <span className="right floated">
                                 <a>
-                                    <Icon name='like' />4 Likes
+                                    <Like  name='like' />4 Likes
                                 </a>
                             </span>
                             <a>
                                 <Link className="submit button" to="/thoughts/:thoughtId">
-                                    <Icon name='comment' />4 Comments
+                                    <CommentForm name='comment' />4 Comments
                                 </Link>
 
                             </a>
