@@ -39,12 +39,34 @@ export const ADD_THOUGHT = gql`
   }
 `;
 
-export const ADD_COMMENT = gql`
-  mutation addComment($thoughtId: ID!, $commentText: String!) {
-    addComment(thoughtId: $thoughtId, commentText: $commentText) {
+export const ADD_PHOTO = gql`
+  mutation addPhoto($photoFile: String!)
+    addPhoto(photoFile: $photoFile) {
       _id
-      thoughtText
-      thoughtAuthor
+      photoFile
+      photoAuthor
+      createdAt
+      comments {S
+        _id
+        commentText
+      }
+      likes {
+        _id
+      }
+      followers {
+        follower_id
+        following_id
+      }
+    }
+  }
+`;
+
+export const ADD_COMMENT = gql`
+  mutation addComment($photoId: ID!, $commentText: String!) {
+    addComment(photoId: $photoId, commentText: $commentText) {
+      _id
+      photoFile
+      photoAuthor
       createdAt
       comments {
         _id
@@ -55,8 +77,26 @@ export const ADD_COMMENT = gql`
   }
 `;
 
-const FOLLOW_USER = gql`
-  mutation($followingId: String!, $userId: String!) {
+export const REMOVE_COMMENT = gql`
+  mutation removeComment($photoId: ID!, $commentText: String!) {
+    removeComment(photoId: $photoId, commentText: $commentText) {
+      _id
+      photoFile
+      photoAuthor
+      createdAt
+      comments {
+        _id
+        commentText
+        createdAt
+      }
+    }
+  }
+`;
+
+
+
+export const ADD_FOLLOWER = gql`
+  mutation addFollower($followingId: String!, $userId: String!) {
     insert_Follow(
       objects: [{ follower_id: $userId, following_id: $followingId }]
     ) {
@@ -65,8 +105,8 @@ const FOLLOW_USER = gql`
   }
 `;
 
-const UNFOLLOW_USER = gql`
-  mutation($followingId: String!, $userId: String!) {
+export const REMOVE_FOLLOWER = gql`
+  mutation removeFollower($followingId: String!, $userId: String!) {
     delete_Follow(
       where: {
         follower_id: { _eq: $userId }
@@ -78,8 +118,8 @@ const UNFOLLOW_USER = gql`
   }
 `;
 
-export const QUERY_LIKE = gql`
-  mutation($postId: Int!, $userId: String!) {
+export const ADD_LIKE = gql`
+  mutation addLike($postId: Int!, $userId: String!) {
     insert_Like(objects: [{ 
       post_id: $postId, 
       user_id: $userId }]) {
@@ -88,8 +128,8 @@ export const QUERY_LIKE = gql`
   }
 `;
 
-export const QUERY_DELETE_LIKE = gql`
-  mutation($postId: Int!, $userId: String!) {
+export const REMOVE_LIKE = gql`
+  mutation removeLike($postId: Int!, $userId: String!) {
     delete_Like(
       where: { 
         user_id: { _eq: $userId },

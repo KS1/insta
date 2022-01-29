@@ -4,7 +4,7 @@ import React, { useState, useRef } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 // import { useAuth } from "../utils/auth";
 import { Button, Label, Icon } from 'semantic-ui-react';
-import { QUERY_LIKE, QUERY_DELETE_LIKE } from "../utils/mutations";
+import { REMOVE_LIKE, ADD_LIKE } from "../utils/mutations";
 import { QUERY_LIKES } from "../utils/queries"
 
 
@@ -29,7 +29,7 @@ function Like(props) {
   // }
 
   // like post mutation
-  const [likePost] = useMutation(QUERY_LIKE, {
+  const [likePost] = useMutation(ADD_LIKE, {
     variables: { postId: props.postId, userId: userId.current },
     refetchQueries: [
       {
@@ -40,7 +40,7 @@ function Like(props) {
   });
 
   // delete post mutation
-  const [deleteLike] = useMutation(QUERY_DELETE_LIKE, {
+  const [deleteLike] = useMutation(REMOVE_LIKE, {
     variables: { postId: props.postId, userId: userId.current },
     refetchQueries: [
       {

@@ -1,4 +1,5 @@
 const { AuthenticationError } = require('apollo-server-express');
+const { default: Like } = require('../../client/src/components/Like');
 const { User, Thought } = require('../models');
 const { signToken } = require('../utils/auth');
 
@@ -16,6 +17,9 @@ const resolvers = {
     },
     thought: async (parent, { thoughtId }) => {
       return Thought.findOne({ _id: thoughtId });
+    },
+    like: async (parent, { postId }) => {
+      return Like.findOne({ _id: postId});
     },
     me: async (parent, args, context) => {
       if (context.user) {
@@ -81,6 +85,23 @@ const resolvers = {
       }
       throw new AuthenticationError('You need to be logged in!');
     },
+    addLike: async (parent, {postId}, context) => {
+      if (context.user) {
+        return Post.findOneAndUpdate(
+          {_id: postId },
+          {
+            $addToSet: {
+              likes: { likeAuthor: context.user.username },
+            },
+          },
+          {
+            new: true,
+            runValidators: true,
+          }
+        );
+      }
+      throw new AuthenticationError('You need to be logged in!')
+    },
     removeThought: async (parent, { thoughtId }, context) => {
       if (context.user) {
         const thought = await Thought.findOneAndDelete({
@@ -115,6 +136,27 @@ const resolvers = {
       throw new AuthenticationError('You need to be logged in!');
     },
   },
+  removeLike: async (parent, {postId}, context) => {
+    if (context.user) {
+      return Post.findOneAndUpdate(
+        {_id: postId },
+        {
+          $pull: {
+            likes: { 
+              _id: likeId,
+              likeAuthor: context.user.username,
+             },
+          },
+        },
+        {
+          new: true,
+          runValidators: true,
+        }
+      );
+    }
+    throw new AuthenticationError('You need to be logged in!')
+  },
+
 };
 
 module.exports = resolvers;

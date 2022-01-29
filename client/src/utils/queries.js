@@ -6,9 +6,9 @@ export const QUERY_USER = gql`
       _id
       username
       email
-      thoughts {
+      photos {
         _id
-        thoughtText
+        photoFile
         createdAt
       }
     }
@@ -21,6 +21,17 @@ export const QUERY_THOUGHTS = gql`
       _id
       thoughtText
       thoughtAuthor
+      createdAt
+    }
+  }
+`;
+
+export const QUERY_PHOTOS = gql`
+  query getPhotos {
+    photos {
+      _id
+      photoFile
+      photoAuthor
       createdAt
     }
   }
@@ -43,6 +54,30 @@ export const QUERY_SINGLE_THOUGHT = gql`
   }
 `;
 
+export const QUERY_SINGLE_PHOTO = gql`
+  query getSinglePhoto($photoId: ID!) {
+    photo(photoId: $photoId) {
+      _id
+      photoFile
+      photoAuthor
+      createdAt
+      comments {
+        _id
+        commentText
+        commentAuthor
+        createdAt
+      }
+      likes {
+        _id
+      }
+      followers {
+        follower_id
+        following_id
+      }
+    }
+  }
+`;
+
 export const QUERY_ME = gql`
   query me {
     me {
@@ -60,7 +95,7 @@ export const QUERY_ME = gql`
 `;
 
 export const QUERY_LIKES = gql`
-  query($id: Int!, $userId: String!) {
+  query getLikes($id: Int!, $userId: String!) {
     Post(where: { id: { _eq: $id } }) {
       Likes_aggregate {
         aggregate {
