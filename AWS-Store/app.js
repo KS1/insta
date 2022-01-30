@@ -3,8 +3,9 @@ const { v4: uuidv4 } = require('uuid');
 var AWS = require('aws-sdk');
 
 // Set the region 
-var accessKeyId =  process.env.AWS_ACCESS_KEY || "AKIAVQHLCLVONJK3PFNR";
-var secretAccessKey = process.env.AWS_SECRET_KEY || "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";
+//Removed exposed access key
+var accessKeyId =  process.env.AWS_ACCESS_KEY || "";
+var secretAccessKey = process.env.AWS_SECRET_KEY || "";
 
 AWS.config.update({
     signatureVersion: 'v4',
